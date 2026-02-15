@@ -102,3 +102,18 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     debug = os.environ.get("FLASK_DEBUG", "False") == "True"
     app.run(debug=debug, host="0.0.0.0", port=port)
+
+def load_or_train_model():
+    global pipeline
+    try:
+        if os.path.exists("loan_pipeline.joblib"):
+            print("Loading saved pipeline...")
+            pipeline = joblib.load("loan_pipeline.joblib")
+            return
+        print("Training new pipeline...")
+        df = pd.read_csv("loan_approval_data.csv")
+        ...
+    except Exception as e:
+        print(f"ERROR during model load/train: {e}")
+        pipeline = None
+
